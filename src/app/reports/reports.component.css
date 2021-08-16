@@ -1,0 +1,46 @@
+.board_container {
+    font-family: Helvetica;
+    background-color: #ccdef1;
+    min-height: 100vh;
+    padding-bottom: 30px;
+  }
+  
+  #dropdownNotification + .dropdown-menu {
+    min-width: 320px;
+  }
+  
+  .user_label {
+    padding: 4px;
+    margin:0;
+  }
+  
+  .board_container .bg-secondary {
+    background-color: #1c507e !important;
+  }
+  
+  .main_container { 
+    margin-top: 50px;
+  }
+  
+  .list {
+    background-color: #ebecf0;
+    border-radius: 3px;
+  }
+  
+  .list-header {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    padding: 8px;
+  }
+  
+  .list ul {
+    padding: 0 8px;
+  }
+  
+  .board_container .dropdown-item { padding-left: 15px; padding-right: 15px; }
+  .board_container .dropdown-item i  {
+    min-width: 16px;
+    margin-right: 5px;
+    text-align: center;
+  }

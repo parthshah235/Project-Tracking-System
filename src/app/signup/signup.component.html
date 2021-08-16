@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-2"></div>
+        <div class="col-lg-6 col-md-8 signup-box">
+            <div class="col-lg-12 signup-form">
+                <div class="col-lg-12 signup-form">
+                    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+                        <h2>Registraion Form</h2>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="form-control-label">FULLNAME :</label>
+                                <input type="text" class="form-control" id="displayName" ngModel name="displayName" pattern="^[A-Za-z\s]+[A-Za-z]*$" required>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">EMAIL ID:</label>
+                                <input type="text" class="form-control" id="email" name="email" [(ngModel)]="user.email" required email #email="ngModel">
+                                <span class="help-back" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">PASSWORD : (Must be more than 6 characters)</label>
+                                <input type="password" class="form-control" id="password" name="password" ngModel required minlength="6">
+                            </div>
+                            <div class="col-lg-12 loginbttm">
+                                <div class="col-lg-6 login-btm signup-button">
+                                    <button class="btn btn-default btn-info" type="submit"  [disabled]="!authForm.valid" >Registration</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="hint-text large">You have an account? 
+                        <a class="text-success" (click)="onlogin()" style="cursor: pointer;">SignIn Now!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

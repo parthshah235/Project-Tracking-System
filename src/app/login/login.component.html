@@ -1,0 +1,50 @@
+<div class="login-form">
+    <form>
+        <h2 class="text-center">Sign in</h2>		
+        <div class="text-center social-btn">
+            <button type="button" class="btn btn-primary btn-block" (click)="signInWithFacebook()">
+                <i class="fab fa-facebook-f"></i> Sign in with <b>Facebook</b>
+            </button>
+			<button type="button" class="btn btn-danger btn-block" (click)="signInWithGoogle()">
+                <i class="fab fa-google"></i> Sign in with <b>Google</b>
+            </button>
+        </div>
+        
+    </form>
+    <div class="or-seperator"><i>or</i></div>
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+        
+        <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+                <i class="fa fa-user input-group-text"></i>
+            </div>
+            <input type="email" class="form-control" id="email" placeholder="Email" name="email" ngModel required email #email="ngModel">    
+        </div>
+        
+        <div class="input-group flex-nowrap my-3">
+            <div class="input-group-prepend">
+                <i class="fa fa-lock input-group-text"></i>
+            </div>
+            <input type="password" class="form-control" id="password" placeholder="Password" name="password" ngModel required>
+        </div>
+        
+        <!--
+		<div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" id="password" name="password" ngModel placeholder="Password" required>
+            </div>
+        </div>
+        -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block login-btn" [disabled]="!authForm.valid" >Sign in</button>
+        </div>
+        <div class="clearfix">
+            <a hidden class="pull-right text-success">Forgot Password?</a>
+        </div>  
+        
+    </form>
+    <div class="hint-text large">Don't have an account? 
+        <a class="text-success" (click)="onRegister()" style="cursor: pointer;"><strong> Register Now! </strong></a>
+    </div>
+</div>

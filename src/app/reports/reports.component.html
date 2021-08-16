@@ -1,0 +1,172 @@
+<!--header-->
+<div class="board_container">
+    <nav class="navbar navbar-expand-sm bg-dark bg-secondary navbar-dark">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" routerLink="/dashboard" style="cursor: pointer;">Task Management System</a>
+        </div>
+  
+        <div class="navbar-aside d-flex align-itmes-center">
+          <ul class="nav navbar-nav navbar-right dropdown">
+            <li *ngIf="authService.user$ | async as user;">
+              <button class="btn dropdown-toggle text-white" type="button" id="dropdownNotification" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-bell fa-lg"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotification"  style="padding: 10px 16px;">
+                <p class="dropdown-item" *ngFor="let n of notifications" style="max-width: 100%; margin: 0 0 10px; font-size: 14px; white-space: normal;"> <strong> {{n.assignedBy}} </strong> {{ n.msg }} <strong>{{n.taskName}}</strong> for the Project <strong> {{n.boardTitle}} </strong></p>
+              </div>
+            </li>
+          </ul>
+  
+          <ul class="nav navbar-nav navbar-right dropdown">
+            <li *ngIf="authService.user$ | async as user;">
+              <!-- <h1>{{user.displayName}}</h1> -->
+  
+              <a style="cursor: pointer;" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <label class="text-white user_label" style="font-size: 20px;">{{user.displayName}}</label>&nbsp;
+                <img src="../../assets/avtar.png" class="rounded-circle z-depth-0" alt="Image" width="35" height=" 35">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" routerLink="/profile"><i class="fas fa-user"></i> Profile</a>
+                <a class="dropdown-item" routerLink="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a class="dropdown-item" routerLink="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+                <a class="dropdown-item" routerLink="/charts"><i class="fas fa-file-alt"></i> Charts</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  <!--header-->
+
+  
+<br>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <form>
+        <input type="text" placeholder="Search in TaskName and TaskPriority" class="form-control" 
+           name="search" [(ngModel)]="searchText" autocomplete="off" >
+      </form>
+    </div>
+    <div class="form-group col-md-3">
+    <button class="btn btn-lg" (click)="captureScreen()">
+        <i class="fas fa-file-pdf fa-lg"></i> Export to PDF
+    </button>
+    </div>
+    <div class="form-group col-md-3">
+      <button class="btn btn-lg" data-toggle="modal" data-target="#exampleModal">
+        <i class="fas fa-chart-bar"></i> Charts
+      </button>
+      </div>
+    
+      <div class="form-group col-md-3">
+        <button class="btn btn-lg" data-toggle="modal" data-target="#exampleModal1">
+          <i class="fas fa-calendar-times"></i> Get Deadline Report
+        </button>
+        </div>
+  </div>
+  
+  <!--data-toggle="modal" data-target="#exampleModal1"-->
+  
+  <div id="contentToConvert">
+  <table class="table table-hover">  
+    <thead>
+    <tr>
+      <td class="text-center" style="text-transform: capitalize;" colspan="4"><h3>{{projectName}}</h3></td>
+    </tr>
+  </thead>
+    <thead>
+        <tr>
+      <th>Task Name</th>
+      <th>Task Status</th>
+      <th>Assigned Member</th>
+      <th>Priority</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let list of lists | filter:searchText; let i = index " >
+            <td>{{list.taskName}}</td>
+            <td *ngIf="list.taskStatus == 0">Open</td>
+            <td *ngIf="list.taskStatus == 1">In Progress</td>
+            <td *ngIf="list.taskStatus == 2">Testing</td>
+            <td *ngIf="list.taskStatus == 3">Closed</td>
+            <ng-container *ngFor="let m of mem ; let j = index">
+                <td *ngIf="i == j">{{m.displayName}} ({{m.email}})</td>
+            </ng-container>
+            <td>{{list.taskPriority}}</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Project/Board Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+            <app-charts></app-charts>
+
+    </div>
+  </div>
+</div>
+
+<!--Deadline Modal-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Project/Board Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <table class="table table-hover" id="contentToConvertTD">  
+        <thead>
+        <tr>
+          <td class="text-center" style="text-transform: capitalize;" colspan="4"><h3>{{projectName}}</h3></td>
+        </tr>
+      </thead>
+        <thead>
+            <tr>
+          <th>Task Name</th>
+          <th>Task Status</th>
+          <th>Assigned Member</th>
+          <th>Priority</th>
+          <th>DueDate</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let list of taskDead ; let i = index " >
+              <ng-container *ngIf="list.taskStatus != 3">  
+              <td>{{list.taskName}}</td>
+                <td *ngIf="list.taskStatus == 0">Open</td>
+                <td *ngIf="list.taskStatus == 1">In Progress</td>
+                <td *ngIf="list.taskStatus == 2">Testing</td>
+                <td *ngIf="list.taskStatus == 3">Closed</td>
+                <ng-container *ngFor="let m of mem ; let j = index">
+                    <td *ngIf="i == j">{{m.displayName}} ({{m.email}})</td>
+                </ng-container>
+                <td>{{list.taskPriority}}</td>
+                <td>{{list.taskDueDate}}</td>
+              </ng-container>
+            </tr>
+        </tbody>
+        
+      </table>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="captureScreenTD()">
+          <i class="fas fa-file-pdf fa-lg"></i>Export to PDF</button>
+      </div>
+    </div>
+  </div>
+</div>

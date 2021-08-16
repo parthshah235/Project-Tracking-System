@@ -1,0 +1,157 @@
+<div class="board_container">
+<nav class="navbar navbar-expand-sm bg-dark bg-secondary navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" (click)="onHome()" style="cursor: pointer;">Task Management System</a>
+    </div>
+
+    <ul class="navbar-aside d-flex align-itmes-center">
+      <ul class="nav navbar-nav navbar-right dropdown" >
+        <li *ngIf="authService.user$ | async as user;">
+          <button class="btn dropdown-toggle text-white" type="button" id="dropdownNotification" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="far fa-bell fa-lg"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotification"  style="padding: 10px 16px;">
+            <p class="dropdown-item" *ngFor="let n of notifications" style="max-width: 100%; margin: 0 0 10px; font-size: 14px; white-space: normal;"> <strong> {{n.assignedBy}} </strong> {{ n.msg }} <strong>{{n.taskName}}</strong> for the Project <strong> {{n.boardTitle}} </strong></p>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right dropdown">
+      <li *ngIf="authService.user$ | async as user;">
+        <a (click)="onProfile()" style="cursor: pointer;">
+          <label class="text-white mt-1" style="font-size: 20px;">{{user.displayName}}</label>&nbsp;
+          <img src="../../assets/avtar.png" class="rounded-circle z-depth-0" alt="{{user.displayName}}" width="35" height="35">
+        </a>
+      </li>
+    </ul>
+    </ul>
+  </div>
+</nav>
+
+<!--
+<div>
+<a *ngFor="let list of lists" routerLinkActive="is-active">
+<p style="cursor: pointer;" routerLink="/task">{{ list.title }}</p>
+</a>
+</div>
+-->
+<div class="board__main pt-5">
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <div class="col-12 mb-5">
+        <h1 class="text-center mb-4">My Project/Board</h1>
+        <form>
+          <input type="text" placeholder="Search" class="form-control" 
+             name="search" [(ngModel)]="searchText" autocomplete="off" >
+        </form>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <!--<div routerLink="/board-modal" class="card h-100" data-toggle="modal" data-target="#exampleModal">-->
+        <div class="card h-100" data-toggle="modal" data-target="#exampleModal">
+          <div class="card-body bg-light brdr">
+            <h5 class="card-title text-center text-primary">
+              <i class="fas fa-plus fa-2x"></i>
+            </h5>
+            <h5 class="card-text text-center"> Create Project/Board</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3" *ngFor="let list of lists | filter:searchText; let i = index">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center" style="text-transform: capitalize;" (click)="navigateURL(list)">{{ list.title }}</h5>
+            <p class="card-text"></p>
+          </div>
+          <div class="card-footer text-right" *ngIf="list.boardStatus != 0; else go">
+            <small class="text-muted">
+              <button class="bg-transparent border-0 py-1" (click)="onDelete(list)">
+                <i class="fas fa-trash fa-lg text-danger"></i>
+              </button>
+
+              <button class="bg-transparent border-0 py-1" 
+               (click)="update1(i)" data-toggle="modal" data-target="#exampleModal1">
+                <i class="fas fa-pencil-alt fa-lg text-primary"></i>
+              </button>
+            </small>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<ng-template #go>
+  <div class="card-footer text-right" >
+    <small class="text-muted">
+      <button class="bg-transparent border-0 py-1" disabled>
+        <i class="fas fa-trash fa-lg text-danger"></i>
+      </button>
+
+      <button class="bg-transparent border-0 py-1" disabled  data-toggle="modal" data-target="#exampleModal1">
+        <i class="fas fa-pencil-alt fa-lg text-primary"></i>
+      </button>
+    </small>
+  </div>
+</ng-template>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Project/Board Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form *ngIf="authService.user$ | async as user;">
+        <!--<div *ngFor="let list of lists; let i= index">-->
+        <div class="modal-body">
+            <div class="form-group">
+              <input class="form-control" #listTitleInput type="text" placeholder="Enter list name..." >
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="createList(listTitleInput.value)">Save changes</button>
+        </div>
+     <!-- </div>-->
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- update board Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Project/Board Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #boardForm="ngForm" (ngSubmit)="onSubmit(boardForm)" *ngIf="authService.user$ | async as user;">
+        <div>
+          <div class="modal-body">
+              <div class="form-group">
+                <input class="form-control" type="text" name="boardTitle" ngModel  placeholder="Enter list name..." >
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

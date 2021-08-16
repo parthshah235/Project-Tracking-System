@@ -1,0 +1,162 @@
+input.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+
+textarea.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+select.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+.board_container {
+  font-family: Helvetica;
+  background-color: #ccdef1;
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+#dropdownNotification + .dropdown-menu {
+  min-width: 320px; 
+}
+
+.user_label {
+  padding: 4px;
+  margin:0;
+}
+
+.board_container .bg-secondary {
+  background-color: #1c507e !important;
+}
+
+.main_container { 
+  margin-top: 50px;
+  max-width: 100%;
+  width: 1340px;
+}
+
+.list {
+  background-color: #ebecf0;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.list-header {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  padding: 12px;
+  margin-bottom: 0;
+  background-color: #ffffff;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.list ul {
+  margin:0;
+  padding: 0 12px;
+  margin-top: 1rem;
+}
+
+.list ul li { margin-bottom: 0; }
+
+.list ul:empty { display: none; }
+
+.list ul:last-child {
+  margin-bottom: 15px;
+  display: block;
+}
+
+.list_badge { font-size: 16px; }
+
+.board_container .dropdown-item { padding-left: 15px; padding-right: 15px; }
+.board_container .dropdown-item i  {
+  min-width: 16px;
+  margin-right: 5px;
+  text-align: center;
+}
+
+.list_body h3 {
+  font-size: 20px;
+  line-height: 28px;
+  cursor: pointer;
+}
+.list_actions .btn:hover { color:#ffffff; }
+/*
+.header-button {
+float: left;
+cursor: default;
+font-size: 18px;
+font-weight: 700;
+line-height: 32px;
+padding-left: 4px;
+text-decoration: none;
+min-height: 40px;
+}
+
+.new-list-button {
+  background-color: #2A6AA3;
+  width: 272px;
+  margin: 0 4px;
+  height: 100%;
+  color: #C0D3E4;
+  font-size: 14px;
+  text-align: left;
+  float: right;
+  position: relative;
+  left: 40px;
+  bottom: 200px;
+}
+*/
+
+.list-card {
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  box-shadow: 0 1px 2px 0px rgba(216, 216, 216, 0.6);
+  display: block;
+  margin-bottom: 8px;
+  position: relative;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 12px;
+  z-index: 0;
+}
+
+.new-card-button {
+  display: block;
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+  color: #8C8C8C;
+  outline: none;
+}
+
+.floating_add {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 3;
+  padding: 0;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  background-color: #ebecf0;
+  color: #333333;
+  border: 2px solid #ebecf0;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.floating_add i {
+  font-size: 16px;
+  line-height: 33px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

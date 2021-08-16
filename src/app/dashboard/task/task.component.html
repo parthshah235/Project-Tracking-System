@@ -1,0 +1,424 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<!--header-->
+<div class="board_container">
+  <nav class="navbar navbar-expand-sm bg-dark bg-secondary navbar-dark">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" (click)="onHome()" style="cursor: pointer;">Task Management System</a>
+      </div>
+
+      <div class="navbar-aside d-flex align-itmes-center">
+        <ul class="nav navbar-nav navbar-right dropdown">
+          <li *ngIf="authService.user$ | async as user;">
+            <button class="btn dropdown-toggle text-white" type="button" id="dropdownNotification" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="far fa-bell fa-lg"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotification"  style="padding: 10px 16px;">
+              <p class="dropdown-item" *ngFor="let n of notifications" style="max-width: 100%; margin: 0 0 10px; font-size: 14px; white-space: normal;"> <strong> {{n.assignedBy}} </strong> {{ n.msg }} <strong>{{n.taskName}}</strong> for the Project <strong> {{n.boardTitle}} </strong></p>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right dropdown">
+          <li *ngIf="authService.user$ | async as user;">
+            <!-- <h1>{{user.displayName}}</h1> -->
+
+            <a style="cursor: pointer;" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <label class="text-white user_label" style="font-size: 20px;">{{user.displayName}}</label>&nbsp;
+              <img src="../../assets/avtar.png" class="rounded-circle z-depth-0" alt="Image" width="35" height=" 35">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click)="onProfile()"><i class="fas fa-user"></i> Profile</a>
+              <a class="dropdown-item" (click)="onHome()"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+              <a class="dropdown-item" routerLink="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!--header-->
+
+  <br>
+  <!--<div class="form-group col-md-3">
+    <select id="inputState" class="form-control" (change)="onSelectList($event.target.value)">
+      <option>Select Your Project</option>
+      <option class="text-info" *ngFor="let list of boardLists" [value]="list.id">{{list.title}}
+      </option>--> <!-- <h6>({{userLists.email}})</h6></option> -->
+    <!--</select>
+  </div>-->
+
+  <h2 class="text-center" style="text-transform: capitalize;">{{projectName}}</h2>
+  
+  <div class="col-12 mb-5">
+    <form>
+      <input type="text" placeholder="Search in task" class="form-control" 
+         name="search" [(ngModel)]="searchText" autocomplete="off" >
+    </form>
+  </div>
+
+
+  <div class="main_container mx-auto">
+    <div class="container-fluid">
+      <div class="row">
+        
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-lg-0">
+          <div class="stack">
+            <div class="list">
+              <h2 class="list-header">Open</h2>
+              <ul *ngFor="let list of lists | filter:searchText; let i = index">
+                <li class="list-card" *ngIf="list.taskStatus == 0">
+                  <div class="list_badge mb-1">
+                    <span  class="badge badge-dark">{{list.taskPriority}}</span>
+                  </div>
+                  <div class="list_body">
+                    <h3 (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">{{list.taskName}}</h3>
+                  </div>
+                  <div class="list_footer mt-3 d-flex align-itmes-center justify-content-between">
+                    <div class="list_duedate">
+                      <i class="far fa-calendar-alt text-secondary"></i>
+                      <span class="pl-2 text-muted">{{list.taskDueDate}}</span>
+                      
+                    </div>
+
+                    <div class="list_actions">
+                      <button class="btn badge badge-primary" (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                      <button class="ml-1 btn badge badge-danger" (click)="delete(i)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-lg-0">
+          <div class="stack">
+            <div class="list">
+              <h4 class="list-header">In Progress</h4>
+              <ul *ngFor="let list of lists | filter:searchText; let i = index">
+                <li class="list-card" *ngIf="list.taskStatus == 1">
+                  <div class="list_badge mb-1">
+                    <span  class="badge badge-dark">{{list.taskPriority}}</span>
+                  </div>
+                  <div class="list_body">
+                    <h3 (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">{{list.taskName}}</h3>
+                  </div>
+                  <div class="list_footer mt-3 d-flex align-itmes-center justify-content-between">
+                    <div class="list_duedate">
+                      <i class="far fa-calendar-alt text-secondary"></i>
+                      <span class="pl-2 text-muted">{{list.taskDueDate}}</span>
+                    </div>
+
+                    <div class="list_actions">
+                      <button class="btn badge badge-primary" (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                      <button class="ml-1 btn badge badge-danger"  (click)="delete(i)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-lg-0">
+          <div class="stack">
+            <div class="list">
+              <h4 class="list-header">QA Testing</h4>
+              <ul *ngFor="let list of lists | filter:searchText;let i = index">
+                <li class="list-card" *ngIf="list.taskStatus == 2">
+                  <div class="list_badge mb-1">
+                    <span  class="badge badge-dark">{{list.taskPriority}}</span>
+                  </div>
+                  <div class="list_body">
+                    <h3 (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">{{list.taskName}}</h3>
+                  </div>
+                  <div class="list_footer mt-3 d-flex align-itmes-center justify-content-between">
+                    <div class="list_duedate">
+                      <i class="far fa-calendar-alt text-secondary"></i>
+                      <span class="pl-2 text-muted">{{list.taskDueDate}}</span>
+                    </div>
+
+                    <div class="list_actions">
+                      <button class="btn badge badge-primary" (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                      <button class="ml-1 btn badge badge-danger" (click)="delete(i)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-lg-0">
+          <div class="stack">
+            <div class="list">
+              <h4 class="list-header">Closed</h4>
+              <ul *ngFor="let list of lists | filter:searchText; let i = index">
+                <li class="list-card" *ngIf="list.taskStatus == 3">
+                  <div class="list_badge mb-1">
+                    <span  class="badge badge-dark">{{list.taskPriority}}</span>
+                  </div>
+                  <div class="list_body">
+                    <h3 (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">{{list.taskName}}</h3>
+                  </div>
+                  <div class="list_footer mt-3 d-flex align-itmes-center justify-content-between">
+                    <div class="list_duedate">
+                      <i class="far fa-calendar-alt text-secondary"></i>
+                      <span class="pl-2 text-muted">{{list.taskDueDate}}</span>
+                    </div>
+
+                    <div class="list_actions">
+                      <button class="btn badge badge-primary" (click)="taskDetails(i)" data-toggle="modal" data-target="#exampleModal1">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                      <button class="ml-1 btn badge badge-danger" (click)="delete(i)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              
+            </div>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let list of lists">
+    <button class="floating_add" type="button" [disabled]="list.taskStatusM === 0 ? true : false" data-toggle="modal" data-target="#exampleModal">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+  <div *ngIf="lists && lists.length === 0" > 
+    <button class="floating_add" type="button" data-toggle="modal" data-target="#exampleModal">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!--<ng-template #go>
+  <button class="floating_add" type="button" data-toggle="modal" data-target="#exampleModal">
+    <i class="fa fa-plus"></i>
+  </button>
+</ng-template>-->
+
+<!--Modal start-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Task Details</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form #taskForm="ngForm" (ngSubmit)="onSubmit(taskForm)" *ngIf="authService.user$ | async as user;">
+        
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Task Name</label>
+            <input class="form-control" #listTitleInput type="text" placeholder="Enter Task Name" name="taskName"
+              ngModel pattern="^[A-Za-z\s]+[A-Za-z]*$" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea rows="6" type="text" class="form-control" placeholder="Enter Description" style="height:90px;"
+              name="taskDesc" ngModel required>
+                </textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>DueDate</label>
+              <input type="date" [(ngModel)]="TaskDue" class="form-control" name="taskDueDate" id="datePiker" (blur)="compareTwoDates()"  ngModel required>
+              <div *ngIf="error.isError" class="text-danger">
+                {{ error.errorMessage }}
+             </div>
+            </div> <!-- form-group end.// -->
+            <div class="form-group col-md-6">
+              <label>Priority</label>
+              <select id="inputState" class="form-control" name="taskPriority" ngModel required>
+                <option class="text-danger" value="High">High</option>
+                <option class="text-warning" value="Medium">Medium</option>
+                <option class="text-success" value="Low">Low</option>
+              </select>
+            </div> <!-- form-group end.// -->
+          </div> <!-- form-row.// -->
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Members</label>
+              <select id="inputState" class="form-control" name="taskMembers" ngModel required>
+                <option>- Select -</option>
+                <option class="text-info" *ngFor="let userLists of usersList" [value]="userLists.uid">
+                  {{userLists.displayName}}
+                  <h6>({{userLists.email}})</h6>
+                </option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!taskForm.valid">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Modal ends-->
+
+
+<!--Modal 2 start-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Task Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="task_tabs">
+        <nav>
+          <div class="task_tabs-navs nav nav-tabs" role="tablist">
+              <a class="nav-item nav-link active" data-toggle="tab" href="#task_details" role="tab" aria-controls="task_details" aria-selected="true">Task Details</a>
+              <a class="nav-item nav-link" data-toggle="tab" href="#task_attachments" role="tab" aria-controls="task_attachments" aria-selected="false">Task Attachments</a>
+          </div>
+        </nav>
+        
+        <div class="task_tabs-content tab-content">
+          <div class="tab-pane fade show active" id="task_details" role="tabpanel" aria-labelledby="task_details">
+            <form *ngIf="authService.user$ | async as user;">
+              <div class="modal-body">
+
+                <div class="form-group">
+                  <label>Task Name</label>
+                  <input class="form-control" [(ngModel)]="TaskName" type="text" placeholder="Enter Task Name" name="taskName"
+                    value={{newTempObject.taskName}} [disabled]="newTempObject.taskStatusM === 0 ? true : false">
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea [(ngModel)]="TaskDesc" type="text" class="form-control" placeholder="Enter Description" style="height:90px;"
+                    name="taskDesc" value={{newTempObject.taskDesc}} [disabled]="newTempObject.taskStatusM === 0 ? true : false">
+                      </textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>DueDate</label>
+                    <input [(ngModel)]="TaskDuedate" type="date" class="form-control" name="taskDueDate" value={{newTempObject.taskDueDate}} [disabled]="newTempObject.taskStatusM === 0 ? true : false">
+                  </div> <!-- form-group end.// -->
+                  <div class="form-group col-md-6">
+                    <label>Priority</label>
+                    <select [(ngModel)]="TaskPriority" id="inputState" class="form-control" name="taskPriority" value={{newTempObject.taskPriority}} [disabled]="newTempObject.taskStatusM === 0 ? true : false">
+                      <option class="text-danger" value="High">High</option>
+                      <option class="text-warning" value="Medium">Medium</option>
+                      <option class="text-success" value="Low">Low</option>
+                    </select>
+                  </div> <!-- form-group end.// -->
+                </div> <!-- form-row.// -->
+
+                <div class="form-row">
+                
+                  <div class="form-group">
+                    <label>Members</label>
+                    <select [(ngModel)]="TaskMembers" name="taskMembers" value={{newTempObject.taskMembers}}  id="inputState" class="form-control" >
+                      
+                      <option class="text-info" *ngFor="let m of mem"  >
+                        {{m.displayName}}
+                        <h6>{{m.email}}</h6>
+                      </option>
+                    </select>
+                  </div>
+                
+                </div>
+
+                
+                  <div class="form-group list-group">
+                    <label for="exampleFormControlFile1">Status</label>
+                    <!--<input type="file" class="form-control-file" id="exampleFormControlFile1">-->
+                    <a *ngIf="newTempObject.taskStatus == 0">
+                    <!-- <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="inProgress()" >In Progress</a>
+                    <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="QA()">QA testing</a>
+                    <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="closed()">Closed</a> -->
+                    <button type="button" class="btn btn-outline-primary" style="cursor: pointer;" (click)="inProgress()">In Progress</button> &nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-warning" style="cursor: pointer;" (click)="QA()">QA testing</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-success" style="cursor: pointer;" (click)="closed()">Closed</button>
+                    </a>
+                    
+                    <a *ngIf="newTempObject.taskStatus == 1">
+                      
+                      <!-- <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="QA()">QA testing</a>
+                      <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="closed()">Closed</a> -->
+
+                      <button type="button" class="btn btn-outline-warning" style="cursor: pointer;" (click)="QA()">QA testing</button>&nbsp;&nbsp;
+                      <button type="button" class="btn btn-outline-success" style="cursor: pointer;" (click)="closed()">Closed</button>
+                    </a>
+
+                    <a *ngIf="newTempObject.taskStatus == 2">
+                      
+                      <!-- <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="inProgress()" >In Progress</a>
+                      <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="closed()">Closed</a> -->
+
+                      <button type="button" class="btn btn-outline-primary" style="cursor: pointer;" (click)="inProgress()">In Progress</button>&nbsp;&nbsp;
+                      <button type="button" class="btn btn-outline-success" style="cursor: pointer;" (click)="closed()">Closed</button>
+                    </a>
+                    
+                    <a *ngIf="newTempObject.taskStatus == 3">
+                      
+                      <!-- <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="inProgress()">In Progress</a>
+                      <a class="list-group-item list-group-item-action" style="cursor: pointer;" (click)="QA()">QA testing</a> -->
+
+                      <button type="button" class="btn btn-outline-primary" style="cursor: pointer;" (click)="inProgress()">In Progress</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-warning" style="cursor: pointer;" (click)="QA()">QA testing</button>
+
+                    </a>
+
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="updateTask()" [disabled]="newTempObject.taskStatusM === 0 ? true : false">Update</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-pane fade" id="task_attachments" role="tabpanel" aria-labelledby="task_attachments">
+            <div *ngFor="let fil of files" >
+              <a href={{fil.downloadURL}}> {{fil.name}} </a>
+            </div>
+            <button routerLink="/uploader">Upload Files</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal 2 ends-->

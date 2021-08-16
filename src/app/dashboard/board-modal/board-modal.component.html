@@ -1,0 +1,18 @@
+<div class="container">
+  <form>
+    <div class="form-group" *ngIf="authService.user$ | async as user;">
+      
+      
+      <h5>
+        Enter Board Name:
+      </h5><input class="form-control" #listTitleInput type="text" placeholder="Enter list name...">
+      <br>
+      <div>
+        <button class="btn btn-outline-warning" routerLink="/board-modal">Cancel</button>&nbsp;
+        <button class="btn btn-outline-info" (click)="createList(listTitleInput.value)">Create</button>
+      </div>
+      <a style="cursor: pointer;" (click)="bd()">Back To Dashboard</a>
+    </div>
+  </form>
+
+  </div>

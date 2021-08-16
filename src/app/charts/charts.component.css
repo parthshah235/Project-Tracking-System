@@ -1,0 +1,12 @@
+.chart_container { position: relative; }
+
+.bar_chart-legend .chart_symbol {
+    display: inline-block;
+    width: 40px;
+    height: 10px;
+}
+
+.bar_chart-legend .chart_symbol-high { background: #ff6384; }
+.bar_chart-legend .chart_symbol-medium { background: #36a2eb; }
+.bar_chart-legend .chart_symbol-low { background: #ffce56; }
+.bar_chart-legend label { margin-bottom:0; padding-left: 8px; padding-right: 8px;  }

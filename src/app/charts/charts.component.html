@@ -1,0 +1,35 @@
+<div class="container-fluid mb-3 mt-3">
+    <div class="row">
+        <div class="chart_container col-12">
+            <canvas id="myChart"></canvas>
+            <!--<p>
+                Tasks Open are : {{openPercent}}% <br>
+                Tasks In Progress are : {{progressPercent}}% <br>
+                Tasks in QA are: {{qaPercent}}% <br>
+                Tasks closed are : {{closedPercent}}% <br>
+                The Project is <strong>{{closedPercent}}%</strong> completed. 
+            </p>-->
+            <p class="mt-3">
+                The Project tasks are <strong>{{closedPercent}}%</strong> completed the remaining are as follows<br>
+                Tasks Open are - {{openPercent}}% <br>
+                Tasks In Progress are - {{progressPercent}}% <br>
+                Tasks in QA are - {{qaPercent}}% <br>
+                Tasks closed are - {{closedPercent}}% <br>
+            </p>
+        </div>
+        <div class="containerB col-12 mt-4 mt-lg-3">
+            <canvas id="myChart1"></canvas>
+
+            <div class="mt-4">
+                <div class="d-flex align-items-center bar_chart-legend justify-content-center">
+                    <span class="chart_symbol chart_symbol-high"></span>
+                    <label>High</label>
+                    <span class="chart_symbol chart_symbol-medium"></span>
+                    <label>Medium</label>
+                    <span class="chart_symbol chart_symbol-low"></span>
+                    <label>Low</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
